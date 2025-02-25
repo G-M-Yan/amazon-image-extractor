@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Image Extractor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+    }
+    #result {
+      margin-top: 20px;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+  <h1>Amazon Image Extractor</h1>
+  <p>Paste your Amazon image URL below:</p>
+  <input type="text" id="amazonUrl" placeholder="Enter Amazon image URL" style="width: 400px;">
+  <button onclick="extractImage()">Extract PNG</button>
+  <div id="result"></div>
+
+  <script>
+    function extractImage() {
+  // Get the input URL
+  const amazonUrl = document.getElementById('amazonUrl').value;
+
+  // Decode the URL to handle encoded characters like %7C and %2C
+  const decodedUrl = decodeURIComponent(amazonUrl);
+
+  // Extract the PNG link using regex
+  const regex = /https:\/\/m\.media-amazon\.com\/images\/I\/B[^|]+\|[^|]+\|([^|]+)\.png/;
+  const match = decodedUrl.match(regex);
+
+  // Display the result
+  const resultDiv = document.getElementById('result');
+  if (match && match[1]) {
+    const pngUrl = `https://m.media-amazon.com/images/I/${match[1]}.png`;
+    resultDiv.innerHTML = `<strong>Extracted PNG URL:</strong><br><a href="${pngUrl}" target="_blank">${pngUrl}</a>`;
+  } else {
+    resultDiv.innerHTML = '<strong>Invalid URL or no PNG found.</strong>';
+  }
+}
+
+  </script>
+</body>
+</html>
